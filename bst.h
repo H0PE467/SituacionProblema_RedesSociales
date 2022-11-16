@@ -6,6 +6,7 @@ template <typename T> class Nodo {
   Nodo<T> *left;
   Nodo<T> *right;
   template <typename U> friend class BST;
+  template <typename U> friend class AVL;
   /**
    * @brief Constructor de nodo
    * @param data dato a agregar
@@ -219,55 +220,6 @@ private:
     return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
   }
 
-  void balance(Nodo<T> *&nodo) {
-      int factor_balanceo = calculateBalanceFactor(nodo);
-      int factor_balanceo_hijo = 0;
-
-      if (factor_balanceo >= 2)
-      {
-        factor_balanceo_hijo = calculateBalanceFactor(nodo->right);
-        if (factor_balanceo_hijo == 1)
-        {
-          rotateRight(nodo);
-        }else if (factor_balanceo_hijo == -1)
-        {
-          /* Rotacion Doble RL */
-        }else
-        {
-          balance(nodo->right)
-        }
-         
-      }else if(factor_balanceo <= -2)
-      {
-        factor_balanceo_hijo = calculateBalanceFactor(nodo->left);
-        if (factor_balanceo_hijo == 1)
-        {
-          /* Rotacion Doble LR */
-        }else if (factor_balanceo_hijo == -1)
-        {
-          /* Rotacion Izquierda */
-        }else
-        {
-          balance(nodo->left)
-        }
-      }
-  }
-
-  void rotateLeft(Nodo<T> *&nodo){
-
-  }
-
-  void rotateRight(Nodo<T> *&nodo){
-    
-  }
-
-  void rotateDoubleLeft(Nodo<T> *&nodo){
-    
-  }
-
-  void rotateDoubleRight(Nodo<T> *&nodo){
-    
-  }
 
 public:
   /**
@@ -382,53 +334,12 @@ public:
 
   
 
-  void balance(){
-    balance(root);
-  }
-
 
   friend ostream &operator<<(ostream &out, BST<T> &bst) {
     return bst.print(bst.root, out);
   }
 };
 
-template <typename T> class AVLTree : private BST<T> {
-private:
-  
-      
-
-    int calculateBalanceFactor(Nodo<T> *&nodo){
-    if (!nodo)
-    {
-      return -1;
-    }else{
-      return BST<T>::height(nodo->left) - BST<T>::height(nodo->right);
-    }
-  }
-  
-
-public:
-  void insert(T dato) { 
-    BST<T>::insert(dato); 
-    balance();
-  }
-
-  
-
-  
-
-  /*
-  Insertar
-  Balancear
-  */
-
-  // Balancear
-  // SLRotation
-  // SRRotation
-  // DLRotation
-  // DRRotation
-
-};
 
 template <typename T> class PriorityQueue : private BST<T> {
 public:

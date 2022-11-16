@@ -8,7 +8,10 @@ using namespace std;
 #include "bst.h"
 #include "hashtable.h"
 #include "lista.h"
+#include "avl.h"
 #include "persona.h"
+
+
 
 void censo(Hashtable<string, Persona> &c, const string PATH) {
   ifstream file(PATH);
@@ -107,6 +110,19 @@ void desplegarCenso(Hashtable<string, Persona> &h) {
   }
 }
 
+void printCiudades(Hashtable<string, Persona> &h){
+  LinkedList<Persona> personas;
+  LinkedList<string> ciudades = h.keys();
+  loadDataLinkedLists(h, personas);
+  AVL<string> cities;
+  while(!ciudades.is_empty() && !personas.is_empty()){
+    string ciudad = ciudades.remove_front();
+    cities.insert(ciudad);
+  }
+
+  cities.inOrden();
+}
+
 void displayPriority(Queue<Persona> &personas) {
   PriorityQueue<Persona> priorizada;
   while (!personas.is_empty()) {
@@ -129,7 +145,8 @@ void menu(const string PATH) {
     cout << " -- Ingresa una opcion --\n"
          << "1. Censo poblacional" << endl
          << "2. Ordenamiento de los habitantes" << endl
-         << "3. Imprimir habitantes usando el ZIP\n";
+         << "3. Imprimir habitantes usando el ZIP" << endl
+         << "4. Ordenar ciudades\n";
     cin >> num;
     switch (num) {
     case 1:
@@ -147,10 +164,15 @@ void menu(const string PATH) {
       displayPriority(queuePersonas);
       break;
 
+    case 4:
+      printCiudades(c);
+      break;
+
     default:
       cout << "opción no válida" << endl;
     }
-  } while (num < 1 || num > 3);
+
+  } while (num <= 4 && num >= 1);
 }
 
 int main(int argc, char **argv) {
@@ -161,4 +183,6 @@ int main(int argc, char **argv) {
     path = argv[1];
   menu(path);
   return 0;
+
+
 }

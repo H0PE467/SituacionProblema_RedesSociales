@@ -1,22 +1,6 @@
 #include <iostream>
 using namespace std;
 
-template <typename T> class Nodo {
-  T data;
-  Nodo<T> *left;
-  Nodo<T> *right;
-  template <typename U> friend class AVL;
-  /**
-   * @brief Constructor de nodo
-   * @param data dato a agregar
-   * Complejidad: O(1)
-   */
-  Nodo(T data) {
-    this->data = data;     // O(1)
-    this->left = nullptr;  // O(1)
-    this->right = nullptr; // O(1)
-  }
-};
 
 template <typename T> class AVL {
 private:
@@ -27,6 +11,7 @@ private:
     if (!nodo) // O(1)
     {
       nodo = new Nodo<T>(dato);   // O(1)
+      balance();
       
     } else if (dato < nodo->data) // O(1)
     {
@@ -67,8 +52,8 @@ private:
   void postOrden(Nodo<T> *&nodo) {
     if (nodo) // O(1)
     {
-      preOrden(nodo->left);                 // O(n)
-      preOrden(nodo->right);                // O(n)
+      postOrden(nodo->left);                 // O(n)
+      postOrden(nodo->right);                // O(n)
       cout << " | " << nodo->data << " | "; // O(1)
     }
   }
@@ -167,53 +152,92 @@ private:
   }
 
 /////////////////////////////////////////////////////////////////////////////
+    void balance(Nodo<T> *&nodo){
+      if (getBalanceFactor(nodo) > 1)
+      {
+        ///////////
+        if (getBalanceFactor(nodo->right) == 1)
+        {
+          rotateRight(nodo);
+        }
+        ///////////
+        else if (getBalanceFactor(nodo->right) == -1)
+        {
+          rotateDoubleRight(nodo);
+        }
+        ///////////        
+        else{
+          balance(nodo->right);
+        }
+        /////////////////////////////////
+      }else if (getBalanceFactor(nodo) < -1)
+      {
+        ///////////
+        if (getBalanceFactor(nodo->left) == 1)
+        {
+          rotateDoubleLeft(nodo);
+        }
+        ///////////
+        else if (getBalanceFactor(nodo->left) == -1)
+        {
+          rotateLeft(nodo);
+        }
+        ///////////
+        else{
+          balance(nodo->left);
+        }
+        ///////////
 
-    void getBalanceFactor(Nodo<T> *&nodo){
+      } 
+    }
+
+    int getBalanceFactor(Nodo<T> *&nodo){
         if (nodo == NULL)
         {
             return 0;
         }
-        return height(nodo->left) - height(nodo->right); 
+        return height(nodo->right) - height(nodo->left); 
     }
 
-    Nodo<T> rotateLeft(Nodo<T> *&nodo){
-    
-        Nodo<T> *&aux = nodo->left;
+    void rotateLeft(Nodo<T> *&nodo){
 
+        Nodo<T> *aux = nodo->left;
         nodo->left = aux->right;
-        aux->right = nodo;
+        aux->right = nodo;      
 
-        return aux;
+        nodo = aux;
+
     }
 
-    Nodo<T> rotateRight(Nodo<T> *&nodo){
+    void rotateRight(Nodo<T> *&nodo){
     
-        Nodo<T> *&aux = nodo->right;
-
+        Nodo<T> *aux = nodo->right;
         nodo->right = aux->left;
-        aux->left = nodo;
+        aux->left = nodo;      
 
-        return aux;
+        nodo = aux;
     }
 
-    Nodo<T> rotateDoubleLeft(Nodo<T> *&nodo){
-        Nodo<T> *&aux = nodo->left;
-        Nodo<T> *&aux2 = aux->right;
+    void rotateDoubleLeft(Nodo<T> *&nodo){
+        Nodo<T> *aux = nodo->left;
+        Nodo<T> *aux2 = aux->right;
 
         nodo->left = aux2;
+        aux->right = aux2->right;
         aux2->left = aux;
-
+        
         return rotateLeft(nodo);
     }
 
     Nodo<T> rotateDoubleRight(Nodo<T> *&nodo){
-        Nodo<T> *&aux = nodo->right;
-        Nodo<T> *&aux2 = aux->left;
+        Nodo<T> *aux = nodo->right;
+        Nodo<T> *aux2 = aux->left;
 
         nodo->right = aux2;
+        aux->left = aux2->left;
         aux2->right = aux;
         
-        return rotateRight(nodo);
+        rotateRight(nodo);
     }
 
 /////////////////////////////////////////////////////////////////////////////
