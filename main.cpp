@@ -155,7 +155,7 @@ void menu(const string PATH) {
 
     case 2:
       loadDataLinkedLists(c, stackPersonas);
-      // sortStack(stackPersonas);
+      sortStack(stackPersonas);
       cout << stackPersonas;
       break;
 
