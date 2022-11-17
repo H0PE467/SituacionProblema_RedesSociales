@@ -151,98 +151,96 @@ private:
     return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
   }
 
-/////////////////////////////////////////////////////////////////////////////
+
     void balance(Nodo<T> *&nodo){
-      if (getBalanceFactor(nodo) > 1)
+      if (getBalanceFactor(nodo) > 1)       // O(1)
       {
-        ///////////
-        if (getBalanceFactor(nodo->right) == 1)
+        
+        if (getBalanceFactor(nodo->right) == 1) // O(1)
         {
-          rotateRight(nodo);
+          rotateRight(nodo); 
         }
-        ///////////
-        else if (getBalanceFactor(nodo->right) == -1)
+        
+        else if (getBalanceFactor(nodo->right) == -1) // O(1)
         {
-          rotateDoubleRight(nodo);
+          rotateDoubleRight(nodo);// O(1)
         }
-        ///////////        
+                
         else{
-          balance(nodo->right);
+          balance(nodo->right); // O log(n)
         }
-        /////////////////////////////////
-      }else if (getBalanceFactor(nodo) < -1)
+        
+      }else if (getBalanceFactor(nodo) < -1) // O(1)
       {
-        ///////////
-        if (getBalanceFactor(nodo->left) == 1)
+        
+        if (getBalanceFactor(nodo->left) == 1) // O(1)
         {
-          rotateDoubleLeft(nodo);
+          rotateDoubleLeft(nodo); // O(1)
         }
-        ///////////
-        else if (getBalanceFactor(nodo->left) == -1)
+        
+        else if (getBalanceFactor(nodo->left) == -1) // O(1)
         {
-          rotateLeft(nodo);
+          rotateLeft(nodo); // O(1)
         }
-        ///////////
+        
         else{
-          balance(nodo->left);
+          balance(nodo->left); // O log(n)
         }
-        ///////////
+        
 
       } 
     }
 
     int getBalanceFactor(Nodo<T> *&nodo){
-        if (nodo == NULL)
+        if (nodo == NULL) // O(1)
         {
             return 0;
         }
-        return height(nodo->right) - height(nodo->left); 
+        return height(nodo->right) - height(nodo->left); // O log(n)
     }
 
     void rotateLeft(Nodo<T> *&nodo){
 
-        Nodo<T> *aux = nodo->left;
-        nodo->left = aux->right;
-        aux->right = nodo;      
+        Nodo<T> *aux = nodo->left; // O(1)
+        nodo->left = aux->right; // O(1)
+        aux->right = nodo;       // O(1)
 
-        nodo = aux;
+        nodo = aux; // O(1)
 
     }
 
     void rotateRight(Nodo<T> *&nodo){
     
-        Nodo<T> *aux = nodo->right;
-        nodo->right = aux->left;
-        aux->left = nodo;      
+        Nodo<T> *aux = nodo->right; // O(1)
+        nodo->right = aux->left; // O(1)
+        aux->left = nodo;      // O(1) 
 
-        nodo = aux;
+        nodo = aux; // O(1)
     }
 
     void rotateDoubleLeft(Nodo<T> *&nodo){
-        Nodo<T> *aux = nodo->left;
-        Nodo<T> *aux2 = aux->right;
+        Nodo<T> *aux = nodo->left; // O(1)
+        Nodo<T> *aux2 = aux->right; // O(1)
 
-        nodo->left = aux2;
-        aux->right = aux2->right;
-        aux2->left = aux;
+        nodo->left = aux2; // O(1)
+        aux->right = aux2->right; // O(1)
+        aux2->left = aux; // O(1)
         
-        return rotateLeft(nodo);
+        return rotateLeft(nodo); // O(1)
     }
 
     Nodo<T> rotateDoubleRight(Nodo<T> *&nodo){
-        Nodo<T> *aux = nodo->right;
-        Nodo<T> *aux2 = aux->left;
-
-        nodo->right = aux2;
-        aux->left = aux2->left;
-        aux2->right = aux;
+        Nodo<T> *aux = nodo->right; // O(1)
+        Nodo<T> *aux2 = aux->left; // O(1)
+ 
+        nodo->right = aux2; // O(1)
+        aux->left = aux2->left; // O(1)
+        aux2->right = aux; // O(1)
         
-        rotateRight(nodo);
+        rotateRight(nodo); // O(1)
     }
 
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
+
 
 public:
 
